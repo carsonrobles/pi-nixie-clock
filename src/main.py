@@ -26,7 +26,7 @@ def main():
     init_logging(get_log_file_name())
     logging.info('starting nixie clock')
 
-    written_time = ''
+    written_time = None
     while True:
         nixie_time = get_nixie_time()
         if nixie_time != written_time:
