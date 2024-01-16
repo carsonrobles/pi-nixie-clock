@@ -2,7 +2,7 @@ from datetime import datetime
 import logging
 import time
 
-import gpiozero as gpio
+import board
 
 
 def get_log_file_name():
@@ -18,7 +18,7 @@ def init_logging(log_fn):
     logging.debug(f'initialized logging to file {log_fn}')
 
 
-def get_nixie_time():
+def get_hhmm():
     return datetime.now().strftime("%H%M")
 
 
@@ -26,11 +26,14 @@ def main():
     init_logging(get_log_file_name())
     logging.info('starting nixie clock')
 
+    hw = board.NixieHW()
+
     written_time = None
     while True:
-        nixie_time = get_nixie_time()
+        nixie_time = get_hhmm()
         if nixie_time != written_time:
             logging.info(f'setting clock time to {nixie_time}')
+            hw.wr_time(nixie_time)
             written_time = nixie_time
 
         time.sleep(1)
